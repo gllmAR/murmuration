@@ -17,9 +17,11 @@ void ofApp::setup(){
     gui.add(playbackSpeedRange.set("playbackSpeedRange", 1, 0, 5));
     gui.add(volume.set("volume", 0.2, 0, 1));
     gui.add(loadSoundFromFolderButton.setup("loadSound"));
+    gui.add(loadSoundsFromFolderButton.setup("loadSounds"));
     gui.add(loadedSoundPath.set(""));
 
     loadSoundFromFolderButton.addListener(this, &ofApp::loadSoundFromFolder);
+    loadSoundsFromFolderButton.addListener(this, &ofApp::loadSoundsFromFolder);
     
     setParticules();
     
@@ -201,6 +203,8 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
     
 }
 
+//--------------------------------------------------------------
+
 void ofApp::loadSoundFromFolder(){
     ofFileDialogResult result = ofSystemLoadDialog("Load file");
     if(result.bSuccess) {
@@ -217,3 +221,52 @@ void ofApp::loadSoundFromFolder(){
     }
 
 }
+
+void ofApp::loadSoundsFromFolder(){
+     ofFileDialogResult result = ofSystemLoadDialog("Load file",true);
+    
+    if(result.bSuccess) {
+        string path = result.getPath();
+        loadSoundsDir(path);
+        }
+        // load your file at `path`
+    }
+
+//--------------------------------------------------------------
+
+void ofApp::loadSoundsDir(string folder){
+    
+    soundsPath.clear();
+    string path = folder;
+    ofDirectory dir(path);
+
+    dir.allowExt("wav");
+    dir.listDir();
+    dir.allowExt("mp3");
+    dir.listDir();
+    dir.allowExt("aiff");
+    dir.listDir();
+    dir.allowExt("mp4");
+    dir.listDir();
+    dir.sort();
+    dir.listDir();
+    soundsTotal = dir.size();
+    
+    // erreur a catcher s'il n y a pas de folder.
+    
+    // storer les path des images dans un vector de string
+    for (int i = 0; i < dir.size(); i++){
+        soundsPath.push_back (dir.getPath(i));
+        
+    }
+    
+    for (int i=0;i<particuleNombre;i++){
+        soundP[i].load(soundsPath[i%soundsPath.size()]);
+        soundP[i].setVolume(volume);
+        soundP[i].play();
+        soundP[i].setLoop(1);
+        cout<<soundsPath[i%soundsPath.size()]<<endl;
+    }
+      
+}
+

@@ -36,8 +36,6 @@ public:
     float dragFactor = 1.0f;
     float frcFactor = 4.0f;
     
-    
-
 
     
     particleMode mode;

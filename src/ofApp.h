@@ -31,6 +31,8 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
         void loadSoundFromFolder();
+        void loadSoundsFromFolder();
+        void loadSoundsDir(string folder);
     
     
 		
@@ -56,6 +58,7 @@ class ofApp : public ofBaseApp{
     ofParameter<float> playbackSpeedRange;
     ofParameter<float> volume;
     ofxButton loadSoundFromFolderButton;
+    ofxButton loadSoundsFromFolderButton;
  
     ofParameter<string> loadedSoundPath;
     
@@ -63,6 +66,8 @@ class ofApp : public ofBaseApp{
     
     int oldParticuleNombre;
     
+    vector<string> soundsPath;
+    int soundsTotal;
     
     
     
